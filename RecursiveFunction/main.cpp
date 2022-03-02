@@ -10,6 +10,17 @@ int Factorial(int n)
 	return n * Factorial(n - 1);
 }
 
+int Fibonacci(int n)
+{
+	//base case
+	if (n == 1 || n == 2)
+	{
+		return 1;
+	}
+	//recursive case
+	return Fibonacci(n - 1) + Fibonacci(n - 2);
+}
+
 int Sum_array(int arr[], int size)
 {
 
