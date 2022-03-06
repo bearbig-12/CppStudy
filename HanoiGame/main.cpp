@@ -91,128 +91,149 @@ void Print_Tower(Hanoi info)
 	std::cout << "A" << "  " << "B" << "  " << "C" << std::endl;
 }
 
-bool Move_disc(char from , char to, Hanoi tower)
+void MoveFromA(char to, Hanoi tower)
 {
 	int A_from_index = 3 - tower.A_dics;
-	int B_from_index = 3 - tower.B_dics;
-	int C_from_index = 3 - tower.C_dics;
 
-	int A_to_index = tower.B_dics + tower.C_dics;
 	int B_to_index = tower.A_dics + tower.C_dics;
 	int C_to_index = tower.B_dics + tower.A_dics;
-	
+	if (tower.A_dics == 0)
+	{
+		std::cout << "There is no discs you can move" << std::endl;
+		return;
 
+	}
+	else if (to == 'B' || to == 'b')
+	{
+		if ((tower.base_tower[A_from_index][0] > tower.base_tower[B_to_index][1]) && tower.B_dics != 0)
+		{
+
+			std::cout << "You cannot place bigger disc on the small disc" << std::endl;
+			return;
+		}
+		tower.base_tower[2 - tower.B_dics][1] = tower.base_tower[A_from_index][0];
+		tower.base_tower[A_from_index][0] = 0;
+		++tower.B_dics;
+		--tower.A_dics;
+	}
+	else if (to == 'C' || to == 'c')
+	{
+
+		if ((tower.base_tower[A_from_index][0] > tower.base_tower[C_to_index][2]) && tower.C_dics != 0)
+		{
+			std::cout << "You cannot place bigger disc on the small disc" << std::endl;
+			return;
+		}
+		tower.base_tower[2 - tower.C_dics][2] = tower.base_tower[A_from_index][0];
+		tower.base_tower[A_from_index][0] = 0;
+
+		++tower.C_dics;
+		--tower.A_dics;
+	}
+
+}
+void MoveFromB(char to, Hanoi tower)
+{
+	int B_from_index = 3 - tower.B_dics;
+	int A_to_index = tower.B_dics + tower.C_dics;
+	int C_to_index = tower.B_dics + tower.A_dics;
+
+	if (tower.B_dics == 0)
+	{
+		std::cout << "There is no discs you can move" << std::endl;
+		return;
+
+	}
+	else if (to == 'A' || to == 'a')
+	{
+		if ((tower.base_tower[B_from_index][1] > tower.base_tower[A_to_index][0]) && tower.A_dics != 0)
+		{
+
+			std::cout << "You cannot place bigger disc on the small disc" << std::endl;
+			return;
+		}
+		tower.base_tower[2 - tower.A_dics][0] = tower.base_tower[B_from_index][1];
+		tower.base_tower[B_from_index][1] = 0;
+		++tower.A_dics;
+		--tower.B_dics;
+
+	}
+	else if (to == 'C' || to == 'c')
+	{
+
+		if ((tower.base_tower[B_from_index][1] > tower.base_tower[C_to_index][2]) && tower.C_dics != 0)
+		{
+			std::cout << "You cannot place bigger disc on the small disc" << std::endl;
+			return;
+		}
+		tower.base_tower[2 - tower.C_dics][2] = tower.base_tower[B_from_index][1];
+		tower.base_tower[B_from_index][1] = 0;
+
+		++tower.C_dics;
+		--tower.B_dics;
+	}
+}
+void MoveFromC(char to, Hanoi tower)
+{
+	int C_from_index = 3 - tower.C_dics;
+	int A_to_index = tower.B_dics + tower.C_dics;
+	int B_to_index = tower.A_dics + tower.C_dics;
+
+	if (tower.C_dics == 0)
+	{
+		std::cout << "There is no discs you can move" << std::endl;
+		return;
+
+	}
+	else if (to == 'A' || to == 'a')
+	{
+		if (tower.base_tower[C_from_index][2] > tower.base_tower[A_to_index][0] && tower.A_dics != 0)
+		{
+
+			std::cout << "You cannot place bigger disc on the small disc" << std::endl;
+			return;
+		}
+		tower.base_tower[2 - tower.A_dics][0] = tower.base_tower[C_from_index][2];
+		tower.base_tower[C_from_index][2] = 0;
+		++tower.A_dics;
+		--tower.C_dics;
+
+	}
+	else if (to == 'B' || to == 'b')
+	{
+
+		if (tower.base_tower[C_from_index][2] > tower.base_tower[B_to_index][1] && tower.C_dics != 0)
+		{
+			std::cout << "You cannot place bigger disc on the small disc" << std::endl;
+			return;
+		}
+		tower.base_tower[2 - tower.C_dics][1] = tower.base_tower[C_from_index][2];
+		tower.base_tower[C_from_index][2] = 0;
+
+		++tower.B_dics;
+		--tower.C_dics;
+	}
+}
+
+bool Move_disc(char from , char to, Hanoi tower)
+{
+
+	
 	if (from == 'A' || from == 'a')
 	{
-		if (tower.A_dics == 0)
-		{
-			std::cout << "There is no discs you can move" << std::endl;
-			return false;
-			
-		}
-		else if (to == 'B' || to == 'b')
-		{
-			if ((tower.base_tower[A_from_index][0] > tower.base_tower[B_to_index][1]) && tower.B_dics != 0)
-			{
-
-				std::cout << "You cannot place bigger disc on the small disc" << std::endl;
-				return false;
-			}
-			tower.base_tower[2 - tower.B_dics][1] = tower.base_tower[A_from_index][0];
-			tower.base_tower[A_from_index][0] = 0;
-			++tower.B_dics;
-			--tower.A_dics;
-			
-		}
-		else if (to == 'C' || to == 'c')
-		{
-			
-			if ((tower.base_tower[A_from_index][0] > tower.base_tower[C_to_index][2]) && tower.C_dics != 0)
-			{
-				std::cout << "You cannot place bigger disc on the small disc" << std::endl;
-				return false;
-			}
-			tower.base_tower[2 - tower.C_dics][2] = tower.base_tower[A_from_index][0];
-			tower.base_tower[A_from_index][0] = 0;
-
-			++tower.C_dics;
-			--tower.A_dics;
-		}
+		MoveFromA(to, tower);
 	}
-
-	if (from == 'B' || from == 'b')
+	else if (from == 'B' || from == 'b')
 	{
-		if (tower.B_dics == 0)
-		{
-			std::cout << "There is no discs you can move" << std::endl;
-			return false;
-
-		}
-		else if (to == 'A' || to == 'a')
-		{
-			if ((tower.base_tower[B_from_index][1] > tower.base_tower[A_to_index][0]) && tower.A_dics != 0)
-			{
-
-				std::cout << "You cannot place bigger disc on the small disc" << std::endl;
-				return false;
-			}
-			tower.base_tower[2 - tower.A_dics][0] = tower.base_tower[B_from_index][1];
-			tower.base_tower[B_from_index][1] = 0;
-			++tower.A_dics;
-			--tower.B_dics;
-
-		}
-		else if (to == 'C' || to == 'c')
-		{
-
-			if ((tower.base_tower[B_from_index][1] > tower.base_tower[C_to_index][2]) && tower.C_dics != 0)
-			{
-				std::cout << "You cannot place bigger disc on the small disc" << std::endl;
-				return false;
-			}
-			tower.base_tower[2 - tower.C_dics][2] = tower.base_tower[B_from_index][1];
-			tower.base_tower[B_from_index][1] = 0;
-
-			++tower.C_dics;
-			--tower.B_dics;
-		}
+		MoveFromB(to, tower);
 	}
-	if (from == 'C' || from == 'c')
+	else if (from == 'C' || from == 'c')
 	{
-		if (tower.C_dics == 0)
-		{
-			std::cout << "There is no discs you can move" << std::endl;
-			return false;
-
-		}
-		else if (to == 'A' || to == 'a')
-		{
-			if (tower.base_tower[C_from_index][2] > tower.base_tower[A_to_index][0] && tower.A_dics != 0)
-			{
-
-				std::cout << "You cannot place bigger disc on the small disc" << std::endl;
-				return false;
-			}
-			tower.base_tower[2 - tower.A_dics][0] = tower.base_tower[C_from_index][2];
-			tower.base_tower[C_from_index][2] = 0;
-			++tower.A_dics;
-			--tower.C_dics;
-
-		}
-		else if (to == 'B' || to == 'b')
-		{
-
-			if (tower.base_tower[C_from_index][2] > tower.base_tower[B_to_index][1] && tower.C_dics != 0)
-			{
-				std::cout << "You cannot place bigger disc on the small disc" << std::endl;
-				return false;
-			}
-			tower.base_tower[2 - tower.C_dics][1] = tower.base_tower[C_from_index][2];
-			tower.base_tower[C_from_index][2] = 0;
-
-			++tower.B_dics;
-			--tower.C_dics;
-		}
+		MoveFromC(to, tower);
+	}
+	else
+	{
+		return false;
 	}
 
 }
