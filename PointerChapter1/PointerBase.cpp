@@ -47,6 +47,26 @@
 //				-> int* p = 10; - 주소가 없는 리터럴이라서 불가능함 (R value)
 //				-> 하지만 위와 같은 경우는 값(표현식)을 참조하는 형태 즉 우측값 참조( R - value Reference)라고 부르는 기법이기에 가능.
 // 
+//			- 포인터 읽는 법-
+//			
+//			 오른쪽에서 왼쪽으로 읽어보면 해답이 보임
+// 
+
+//			1. 식별자(Identifier : 함수명, 변수명)를 찾는다.
+//			2. 오른쪽으로 읽기
+//				괄호 ')'가 나오면 우선순위에 따라 왼쪽으로 읽기
+//				오른쪽으로 다 읽으면 끝
+//			3. 왼쪽으로 읽기
+//				 * : pointer to
+//				[] : array of
+//				() : fnction returning
+//		
+//			ex) int *num[3]; == num is array of 3 which is pointer to int	, int *num[3] { &x, &y, &z }
+//			ex) int (*num)[3]; == num is pointer to array of 3 which is int	, int (*num)[3] = num;
+//			ex) int* (*(*p)(int))[10]; == p is pointer to function has int parameter returning pointer to array of 10 which is pointer to int
+//			ex) int* (*(*array[5])())(); array is array of 5 which is pointer to function returning pointer to function returning pointer to int
+//										//array is array of 5 which is pointer to function has void parameter returning pointer to function has  void parameter  returning which is pointer to int
+
 // 
 //		-함수 포인터-
 // 
