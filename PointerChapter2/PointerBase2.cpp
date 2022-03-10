@@ -20,31 +20,32 @@ int main()
 		{1, 2, 3},
 		{4, 5, 6}
 	};
-	int(*p)[3] = array;
-	//int* p = &array[0][0];
-	std::cout << p << std::endl;
-	std::cout << *p << std::endl;
-	std::cout << p + 1 << std::endl;
-	std::cout << *(p + 1) << std::endl;
-	std::cout << *(p + 1) + 2 << std::endl;
-	std::cout << *(*p + 1) << std::endl;
+	//int(*p)[3] = array;
+	int* p = &array[0][0];
+	
 
 	for (int i = 0; i < 2; ++i)
 	{
 		std::cout << " { ";
 		for (int j = 0; j < 3; ++j)
 		{
-			std::cout << ((*(p + i)) + j) << ", ";
-			//std::cout << *p++ << ", ";
+			//std::cout << *((*(p + i)) + j) << ", ";
+			//std::cout << *((*p) + j) << ", ";
+			std::cout << *p++ << ", ";
 
 		}
 		std::cout << " } ";
 		std::cout << std::endl;
-		//++p;
+		//p++;
 	}
 
 
-
+	//std::cout << p << std::endl;
+	//std::cout << *p << std::endl;
+	//std::cout << p + 1 << std::endl;
+	//std::cout << *(p + 1) << std::endl;
+	//std::cout << *(p + 1) + 2 << std::endl;
+	//std::cout << *(*p + 1) << std::endl;
 
 
 
