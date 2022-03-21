@@ -4,6 +4,7 @@
 #include "BubbleSort.h"
 #include"InsertionSort.h"
 #include "MergeSort.h"
+#include "QuickSort.h"
 
 void PrintArray(int input[], int size)
 {
@@ -31,6 +32,7 @@ int main()
 	//SelectionSort(array, SIZE);
 	//BubbleSort(array, SIZE);
 	//InsertionSort(array, SIZE);
-	MergeSort(array,0, SIZE-1);
+	//MergeSort(array,0, SIZE-1);
+	QuickSort(array, 0, SIZE - 1);
 	PrintArray(array, SIZE);
 }
