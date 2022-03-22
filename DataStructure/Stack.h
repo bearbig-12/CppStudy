@@ -20,7 +20,7 @@ void PrintStack(Stack& stack);
 void Push(Stack& stack, int value);
 void Pop(Stack& stack);
 
-void PrintInfo()
+void PrintStackInfo()
 {
 	std::cout << "<Stack>" << std::endl;
 	std::cout << "[1] Push" << std::endl;
@@ -29,7 +29,7 @@ void PrintInfo()
 	std::cout << "----------------" << std::endl;
 } 
 
-void UserInput(Stack& stack)
+void StackUserInput(Stack& stack)
 {
 	int command{};
 	bool isExit{ false };

@@ -1,11 +1,16 @@
 #include <iostream>
 #include "Stack.h"
+#include "Queue.h"
 
 int main()
 {
-	Stack mstack;
+	//Stack mstack;
+	Queue mqueue;
 
-	PrintInfo();
-	UserInput(mstack);
+	//PrintStackInfo();
+	//StackUserInput(mstack);
+
+	PrintQueueInfo();
+	QueueUserInput(mqueue);
 
 }
