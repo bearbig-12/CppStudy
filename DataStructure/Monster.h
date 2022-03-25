@@ -8,3 +8,12 @@ struct Monster
 
 	Monster* pNext;
 };
+
+struct Monster2
+{
+	char name[NAME_L];
+	int HP{0};
+
+	Monster* pNext;
+	Monster* pPrev;
+};

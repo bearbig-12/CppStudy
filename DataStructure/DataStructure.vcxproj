@@ -139,12 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DoubleLinkedList.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="SingleLinkedList.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DoubleLinkedList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SingleLinkedList.cpp" />
   </ItemGroup>

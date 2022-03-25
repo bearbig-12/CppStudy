@@ -12,5 +12,7 @@ int GetCountMonsterList(const MonsterList& list);
 void PrintMonsterList(const MonsterList& list);
 void PrintRecursive(Monster* monster);
 Monster* FindMonster(const MonsterList& list, const char* name);
+bool Delete(MonsterList& list, const char* name);
+
 
 void DeleteAll(MonsterList& list);
