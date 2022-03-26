@@ -4,8 +4,8 @@
 
 struct MonsterList2
 {
-	Monster* pHead{};
-	Monster* pTail{};
+	Monster2* pHead{};
+	Monster2* pTail{};
 };
 
 Monster2* CreateMonster(MonsterList2& list, const char* name, const int hp);
