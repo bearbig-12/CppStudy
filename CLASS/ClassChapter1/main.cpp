@@ -50,7 +50,48 @@
 //				Audio Interface
 //				USB
 
+class Point2D
+{
+	
+	int mX;
+	int mY;
+public:
+	void Print();
+	//Getter & Setter
+	void Set(int x, int y);
+	void SetX(int x);
+	void SetY(int y);
+	int GetX();
+	int GetY();
+};
+
+void Point2D::Print()
+{
+	std::cout << mX << " , " <<  mY << std::endl;
+}
+void Point2D::Set(int x, int y)
+{
+	mX = x;
+	mY = y;
+}
+void Point2D::SetX(int x)
+{
+	mX = x;
+}
+void Point2D::SetY(int y)
+{
+	mY = y
+}
+int Point2D::GetX()
+{
+	return mX;
+}
+int Point2D::GetY()
+{
+	return mY;
+}
 int main()
 {
-
 }
+
+
