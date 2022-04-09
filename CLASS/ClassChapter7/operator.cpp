@@ -24,11 +24,11 @@ public:
 		return newPt;
 	}
 
-	Point2D operator +(const Point2D& point)	// 멤버함수
-	{
-		Point2D result{ mX + point.mX, mY + point.mY };
-		return result;
-	}
+	//Point2D operator +(const Point2D& point)	// 멤버함수
+	//{
+	//	Point2D result{ mX + point.mX, mY + point.mY };
+	//	return result;
+	//}
 
 	const Point2D& operator ++() // ++x 전위 연산자(단항) 매개변수가 없으면 전위, 무명객체가 생길수 있으므로 const Point2D&
 	{
