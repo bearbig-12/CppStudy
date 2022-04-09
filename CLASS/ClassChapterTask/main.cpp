@@ -24,6 +24,4 @@ int main()
 
 
 
-	//s1 += s2;
-	//std::cout << s1;
 }
