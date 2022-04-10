@@ -15,14 +15,21 @@ public:
 
 	void Print();
 
-	String& operator=(const String& string);
+	String operator=(const String& string);
 	friend String operator+(const String& s1, const String& s2);
-	String& operator +=(const String& string);
+	String operator +(const String& string);
+	String operator +=(const String& string);
 	char& operator [](int index);
-	friend std::ostream& operator << (std::ostream& os, const String& st);
+	friend std::ostream& operator << (std::ostream& os, const String st);
 
-	static int GetLength(const String& string);
-	char* GetString() const;
+	int GetLength() const 
+	{ 
+		return mS_Length; 
+	} 
+	const char* GetString() const
+	{
+		return mString;
+	}
 
 };
 
