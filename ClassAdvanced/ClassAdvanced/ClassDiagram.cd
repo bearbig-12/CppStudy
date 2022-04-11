@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Animal">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAACABAAACAAAAAAAAIAAAAAAAAJAAABAAAAAA=</HashCode>
+      <FileName>Animal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dog">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Dog::BREED" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Dog.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACIAAAAACAAAAAAAAiAAgAAAAAA=</HashCode>
+      <FileName>Dog.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>
