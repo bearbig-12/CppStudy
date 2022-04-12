@@ -1,3 +1,4 @@
+
 #pragma once
 #include "Character.h"
 class Warrior :
@@ -10,4 +11,3 @@ public:
 
     void Attack() const override;
 };
-
