@@ -8,13 +8,14 @@ public:
     Animal();
     Animal(int age, int weight);
 
-    ~Animal();
+    virtual ~Animal();
 
     int GetAge() const;
     void SetAge(int age);
     int GetWeight() const;
     void SetWeight(int weight);
 
-    void Sound();
+    virtual void Sound();       // 가상함수 덮어쓰기(override) - 파생 클래스에서 재정의 가능. 
+    virtual Animal* Clone();
 };
 

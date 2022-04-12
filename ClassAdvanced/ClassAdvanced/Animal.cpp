@@ -42,3 +42,8 @@ void Animal::Sound()
 {
 	std::cout << "Some Sound " << std::endl;
 }
+
+Animal* Animal::Clone()
+{
+	return new Animal(*this);
+}
