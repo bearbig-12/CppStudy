@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{0bbf3e7f-2e35-4bd6-9893-8f63ef5f7ca0}</ProjectGuid>
-    <RootNamespace>ClassAChpater12</RootNamespace>
+    <ProjectGuid>{0f2a8746-601f-4b70-b5f8-4d31d4ac0810}</ProjectGuid>
+    <RootNamespace>ClassAChapter2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,13 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="Warrior.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="FunctionPointer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Warrior.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

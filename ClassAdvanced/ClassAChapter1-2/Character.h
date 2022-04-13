@@ -8,6 +8,7 @@ public:
 	virtual ~Character();
 
 public:
-	virtual void Attack() const;
+	virtual void Attack() const = 0;
+	virtual void Dead() const = 0;
 
 };

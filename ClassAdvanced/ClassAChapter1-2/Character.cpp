@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "Character.h"
 #include <iostream>
 Character::Character() : mHp{ 0 }
 {
@@ -10,7 +11,3 @@ Character::~Character()
 	std::cout << "[-] Character Destructed" << std::endl;
 }
 
-void Character::Attack() const
-{
-	std::cout << '\t' << "Virtual Attack" << std::endl;
-}

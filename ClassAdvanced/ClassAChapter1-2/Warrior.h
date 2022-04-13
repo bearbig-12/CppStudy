@@ -10,4 +10,6 @@ public:
     ~Warrior();
 
     void Attack() const override;
+    void DoubleSwing() const;
+    void Dead() const override;
 };
