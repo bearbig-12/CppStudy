@@ -46,4 +46,17 @@
 //				-동적배열 = 원소의 추가삭제가 뒤에서 일어남
 
 //			std::forward_list
-//				-Sequence, Single Linked List, Allocator
+//				- Sequence, Single Linked List, Allocator
+//				- Dynamic
+//				- list = 원소의 추가/삭제가 뒤에서 일어날때, vector보다는 자유
+//
+
+//			std::list
+//				- Sequence, Double Linked List
+//				- Dynamic			
+//				
+
+//			std::deque
+//				- Sequence, Double Ended Queue
+//				- Dynamic
+//	
