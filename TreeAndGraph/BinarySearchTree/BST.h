@@ -33,7 +33,7 @@ public:
 	void  InOrder(Node* node);
 	bool  Find_key(Node* node, int key);
 	bool  Find_Name(Node* node, std::string name);
-	Node* Delete(Node* node, Node* parent, int key);
+	Node* Delete(Node* node, int key);
 	Node* GetSimilarNode(Node* node);
 };
 

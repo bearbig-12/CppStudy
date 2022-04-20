@@ -14,7 +14,7 @@ int main()
 	tree.Insert(tree.mpRoot, 15, "Ryu");
 	tree.Insert(tree.mpRoot, 9, "Xin");
 
-	tree.Delete(tree.mpRoot, nullptr, 5);
+	tree.Delete(tree.mpRoot, 5);
 	tree.InOrder(tree.mpRoot);
 
 }

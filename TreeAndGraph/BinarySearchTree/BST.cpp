@@ -133,69 +133,52 @@ bool BST::Find_Name(Node* node, std::string name)
 	}
 }
 
-BST::Node* BST::Delete(Node* node, Node* parent, int key)
+BST::Node* BST::Delete(Node* node, int key)
 {
 	if (node == nullptr)
 	{
 		std::cout << "Tree is Empty" << std::endl;
+		return node;
 	}
 	if (node->mKey > key)
 	{
-		node->mpLeft = Delete(node->mpLeft, node, key);
+		node->mpLeft = Delete(node->mpLeft, key);
 	}
 	else if (node->mKey < key)
 	{
-		node->mpRight = Delete(node->mpRight, node, key);
+		node->mpRight = Delete(node->mpRight, key);
 	}
 	else
 	{
 		// Node is Leaf Node
 		if (node->mpLeft == nullptr && node->mpRight == nullptr)
 		{
-			if (parent->mpLeft == node)
-			{
-				parent->mpLeft = nullptr;
-			}
-			else if (parent->mpRight == node)
-			{
-				parent->mpRight = nullptr;
-			}
 			delete node;
 			node = nullptr;
+		}
+		else if (node->mpRight == nullptr) 
+		{
+			Node* space = node->mpLeft;
+			delete node;
+			return space;
+		}
+		else if (node->mpLeft == nullptr)	
+		{					
+			Node* space = node->mpRight;
+			delete node;
+			return space;
 		}
 		//node has 2 child
 		else if (node->mpLeft != nullptr && node->mpRight != nullptr)
 		{
 			Node* temp = GetSimilarNode(node->mpRight);
-			node = temp;
-			temp = Delete(node, nullptr, temp->mKey);
-			 
+			node->mKey = temp->mKey;
+			node->mName = temp->mName;
+			node->mpRight = Delete(node->mpRight, node->mKey);
+			
 		}
-		// Node has 1 child
-		else if (node->mpLeft != nullptr || node->mpRight != nullptr)
-		{
-			Node* temp{};
-			if (node->mpLeft != nullptr)
-			{
-				temp = node->mpLeft;
-			}
-			else if (node->mpRight != nullptr)
-			{
-				temp = node->mpRight;
-			}
-
-			if (parent->mpLeft == node)
-			{
-				parent->mpLeft = temp;
-			}
-			else if (node->mpRight == node)
-			{
-				parent->mpRight = temp;
-			}
-		}
-		return node;
 	} 
-	
+	return node;
 }
 
 BST::Node* BST::GetSimilarNode(Node* node)
