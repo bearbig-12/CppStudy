@@ -142,7 +142,7 @@ int main()
 	
 	bool IsStop = false;
 	int command{};
-	while (command == 6)
+	while (command != 6)
 	{
 		PrintInfo();
 		std::cout << ">	";
