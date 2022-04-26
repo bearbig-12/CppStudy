@@ -1,7 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
-
+#include <future>
 // 쓰레드
 //
 //		하나의 기능을 위해서 다른 기능들을 멈출 필요는 없다. 그렇기에 하나의 프로세스에서도 동시에 처리가 필요하다
@@ -14,12 +14,14 @@ std::mutex mutex;
 //WorkerA
 void PrintInt()
 {
+	mutex.lock();
 	for (int i = 0; i < 500; ++i)
 	{
-		mutex.lock();
+		
 		std::cout << "Worker1 : " << i << std::endl;
-		mutex.unlock();
+		
 	}
+	mutex.unlock();
 }
 
 //WorkerB
@@ -36,12 +38,23 @@ void PrintAscii()
 
 int main()
 {
-	std::thread worker1(PrintInt);
+	/*std::thread worker1(PrintInt);
 	std::thread worker2(PrintAscii);
 
 	worker1.join();
 	worker2.join();
 
+	std::cout << "----모든 작업이 끝났다----" << std::endl;*/
+
+	// 비동기 방식 함수 호출
+	std::future<void> aync1 = std::async(PrintInt);
+	std::future<void> aync2 = std::async(PrintAscii);
 	std::cout << "----모든 작업이 끝났다----" << std::endl;
+
+	aync1.get();
+	std::cout << "Print int Done" << std::endl;
+
+	aync2.get();
+	std::cout << "Print ascii Done" << std::endl;
 
 }

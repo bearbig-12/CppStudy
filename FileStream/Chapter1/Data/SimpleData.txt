@@ -1,0 +1,4 @@
+--- Monster Data ---
+JELLY,1,1,1
+WOLF,5,5,5
+DEMON,10,10,10
