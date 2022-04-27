@@ -1,4 +1,5 @@
---- Monster Data ---
+--Monster data--
 JELLY,1,1,1
 WOLF,5,5,5
 DEMON,10,10,10
+ORC,20,20,20
