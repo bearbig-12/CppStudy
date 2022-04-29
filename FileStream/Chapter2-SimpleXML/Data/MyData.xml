@@ -1,0 +1,7 @@
+<?xml version "1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="sprites.png" widhth="256" height="256">
+    <sprite n="bug1_1.png" x="0" y="0" w="24" h="24"/>
+    <sprite n="bug1_2.png" x="24" y="0" w="24" h="24"/>
+    <sprite n="bug1_3.png" x="48" y="0" w="24" h="24"/>
+    <sprite n="bug1_4.png" x="72" y="0" w="24" h="24"/>
+</TextureAtlas>
