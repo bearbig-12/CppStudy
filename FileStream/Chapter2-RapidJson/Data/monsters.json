@@ -1,0 +1,54 @@
+{
+    "monsters": [
+        {
+            "name": "슬라임",
+            "status": {
+                "level": 1,
+                "hp": 1,
+                "mp": 1
+            },
+            "items": [
+                {
+                    "name": "끈적한 젤리",
+                    "gold": 1
+                }
+            ]
+        },
+        {
+            "name": "늑대인간",
+            "status": {
+                "level": 5,
+                "hp": 5,
+                "mp": 5
+            },
+            "items": [
+                {
+                    "name": "발톱",
+                    "gold": 2
+                },
+                {
+                    "name": "늑대가죽",
+                    "gold": 5
+                }
+            ]
+        },
+        {
+            "name": "악마",
+            "status": {
+                "level": 10,
+                "hp": 10,
+                "mp": 10
+            },
+            "items": [
+                {
+                    "name": "날개",
+                    "gold": 10
+                },
+                {
+                    "name": "손톱",
+                    "gold": 5
+                }
+            ]
+        }
+    ]
+}
