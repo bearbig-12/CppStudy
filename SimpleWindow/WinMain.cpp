@@ -99,6 +99,17 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 	// 윈도우에서 무슨일이 벌어졌는지 알려줌
 	switch (message)
 	{
+	//case WM_ERASEBKGND:	// 윈도우 배경을 지우는 기능.
+	//	break;
+	case WM_PAINT:
+	{
+		PAINTSTRUCT ps; // WM_PAINT는 PAINTSTRUCT을 무조건 써야한다.
+
+		HDC hdc = BeginPaint(hwnd,&ps);
+		// TODO
+		Rectangle(hdc,0,0,100,100);
+		EndPaint(hwnd, &ps);
+	}
 	case WM_KEYDOWN:
 	{
 		std::stringstream ss;
@@ -112,15 +123,24 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 	}
 	case WM_LBUTTONDOWN:
 	{
-		int x = LOWORD(lParam);	// x좌표
-		int y = HIWORD(lParam);	// y좌표
+		//int x = LOWORD(lParam);	// x좌표
+		//int y = HIWORD(lParam);	// y좌표
 
-		// 문자열
-		std::stringstream ss;
-		ss << "x : " << x << "  " << "y : " << y << std::endl;
+		//// 문자열
+		//std::stringstream ss;
+		//ss << "x : " << x << "  " << "y : " << y << std::endl;
 
-		//MessageBoxA(hwnd, ss.str().c_str(), "Message Test", MB_OK);	// MessageBoxA 아스키 버젼 , MessageBoxW 와이드 버젼
-		OutputDebugStringA(ss.str().c_str());
+		////MessageBoxA(hwnd, ss.str().c_str(), "Message Test", MB_OK);	// MessageBoxA 아스키 버젼 , MessageBoxW 와이드 버젼
+		//OutputDebugStringA(ss.str().c_str());
+
+		HDC hdc;
+		hdc = GetDC(hwnd);	//Device Context를 포인터로 받아옴.
+
+		Rectangle(hdc, 0, 0, 100, 100);
+
+		ReleaseDC(hwnd, hdc);	// 포인터이기 때문에 Release 필요
+
+
 		break;
 	}
 
