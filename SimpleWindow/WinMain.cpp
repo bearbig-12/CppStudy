@@ -1,5 +1,5 @@
 #include <Windows.h>
-
+#include <sstream>
 // HINSTANCE : Handle(pointer) of INSTANCE
 // LPSTR : Long Pointer to NULL - Terminated STRing
 
@@ -99,6 +99,31 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 	// 윈도우에서 무슨일이 벌어졌는지 알려줌
 	switch (message)
 	{
+	case WM_KEYDOWN:
+	{
+		std::stringstream ss;
+		if (wParam == VK_SPACE) // 스페이스 누를때만 출력
+		{
+			ss << "Virtual Key : " << wParam << ", Extra : " << lParam << std::endl;
+			OutputDebugStringA(ss.str().c_str());
+		}
+		
+		break;
+	}
+	case WM_LBUTTONDOWN:
+	{
+		int x = LOWORD(lParam);	// x좌표
+		int y = HIWORD(lParam);	// y좌표
+
+		// 문자열
+		std::stringstream ss;
+		ss << "x : " << x << "  " << "y : " << y << std::endl;
+
+		//MessageBoxA(hwnd, ss.str().c_str(), "Message Test", MB_OK);	// MessageBoxA 아스키 버젼 , MessageBoxW 와이드 버젼
+		OutputDebugStringA(ss.str().c_str());
+		break;
+	}
+
 	case WM_CLOSE:
 		DestroyWindow(hwnd);
 		break;
@@ -107,7 +132,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 		PostQuitMessage(0);
 		break;
 	default:
-		return DefWindowProc(hwnd, message, wParam,lParam);
+		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
 	return 0;
 }
