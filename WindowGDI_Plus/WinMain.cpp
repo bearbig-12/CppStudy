@@ -1,5 +1,9 @@
 #include <Windows.h>
 #include <sstream>
+#include <gdiplus.h>
+
+#pragma comment (lib, "Gdiplus.lib")
+
 // HINSTANCE : Handle(pointer) of INSTANCE
 // LPSTR : Long Pointer to NULL - Terminated STRing
 
@@ -34,9 +38,10 @@ int WINAPI WinMain(
 	_In_ int nShowCmd
 )
 {
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR token;
 
-	//MessageBox(nullptr, L"HelloWorld", L"SimpleWorld", MB_ICONEXCLAMATION | MB_OK);
-
+	GdiplusStartup(&token, &gdiplusStartupInput, nullptr);
 	// 윈도우 클래스
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
@@ -99,36 +104,15 @@ void OnPaint(HWND hwnd)
 	PAINTSTRUCT ps; // WM_PAINT는 PAINTSTRUCT을 무조건 써야한다.
 
 	HDC hdc = BeginPaint(hwnd, &ps);
+	Gdiplus::Graphics graphics(hdc);
+	/*Gdiplus::Pen pen(Gdiplus::Color(255, 0, 0, 255));
+	graphics.DrawRectangle(&pen, 0, 0, 100, 100);*/
 
-	//PEN
-	{
-		HPEN bluePen = CreatePen(PS_SOLID, 5, RGB(0, 0, 255));		// 만들고 , 0x000000FF = Red
-		HPEN oldPen = (HPEN)SelectObject(hdc, bluePen);				// 예전에 쓰던 검은색 펜
-
-		SelectObject(hdc, bluePen);									// 만든 펜을 사용
-		Rectangle(hdc, 0, 0, 100, 100);
-
-
-		DeleteObject(bluePen);										// 지우고
-		SelectObject(hdc, oldPen);
-		Rectangle(hdc, 100, 100, 200, 200);
-	}
+	Gdiplus::Image image(L"isaac.png");
 	
-	//Brush
-	{
-		HBRUSH HatchBrush = CreateHatchBrush(HS_CROSS, RGB(255, 0, 0));
-		HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, HatchBrush);
-
-
-		SelectObject(hdc, HatchBrush);
-		Rectangle(hdc, 200, 200, 300, 300);
-
-		SelectObject(hdc, oldBrush);
-
-		DeleteObject(HatchBrush);
-
-
-	}
+	graphics.DrawImage(&image, 0, 0, 
+		ps.rcPaint.right - ps.rcPaint.left,
+		ps.rcPaint.bottom - ps.rcPaint.top);
 
 	EndPaint(hwnd, &ps);
 }
