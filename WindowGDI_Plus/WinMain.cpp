@@ -62,6 +62,8 @@ int WINAPI WinMain(
 
 	// 클래스로 부터 윈도우 생성 - 등록된 클래스로부터 만들어지기에 무조건 클래스가 등록되어 있어야 함.
 	HWND hwnd;
+	RECT rect{ 0,0,640,480 };
+	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
 
 	hwnd = CreateWindowEx(
 		0,
@@ -70,8 +72,8 @@ int WINAPI WinMain(
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		640,
-		480,
+		rect.right-rect.left,
+		rect.bottom-rect.top,
 		NULL,
 		NULL,
 		hInstance,
@@ -110,9 +112,10 @@ void OnPaint(HWND hwnd)
 
 	Gdiplus::Image image(L"isaac.png");
 	
-	graphics.DrawImage(&image, 0, 0, 
+	/*graphics.DrawImage(&image, 0, 0, 
 		ps.rcPaint.right - ps.rcPaint.left,
-		ps.rcPaint.bottom - ps.rcPaint.top);
+		ps.rcPaint.bottom - ps.rcPaint.top);*/
+	graphics.DrawImage(&image, 0, 0, image.GetWidth(), image.GetHeight()); // 원본 그대로
 
 	EndPaint(hwnd, &ps);
 }
