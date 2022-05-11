@@ -1,9 +1,13 @@
 #include <Windows.h>
 #include <gdiplus.h>
+#include <list>
+#include "Card.h"
 
 #pragma comment (lib, "Gdiplus.lib")
 
 const wchar_t gClassName[] = L"MyWindowClass";
+
+std::list<Solitare::Card> myCards;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -17,6 +21,10 @@ int WINAPI WinMain(
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR gdiplusToken;
 	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
+
+	myCards.push_back(Solitare::Card(Solitare::Type::Bear, 0, 0));
+	myCards.push_back(Solitare::Card(Solitare::Type::Wolf, 120, 0));
+	myCards.push_back(Solitare::Card(Solitare::Type::Dragon, 240, 0));
 
 	HWND hwnd;
 	WNDCLASSEX wc;
@@ -68,6 +76,8 @@ int WINAPI WinMain(
 		DispatchMessage(&msg);
 	}
 
+	myCards.clear();
+
 	Gdiplus::GdiplusShutdown(gdiplusToken);
 	return static_cast<int>(msg.wParam);
 }
@@ -80,6 +90,12 @@ void OnPaint(HWND hwnd)
 	hdc = BeginPaint(hwnd, &ps);
 
 	Gdiplus::Graphics graphics(hdc);
+
+	for (auto& card : myCards)
+	{
+		card.Click_Turn(true);
+		card.Draw(graphics);
+	}
 
 	EndPaint(hwnd, &ps);
 }
