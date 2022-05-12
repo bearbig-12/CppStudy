@@ -4,30 +4,37 @@
 namespace Solitare
 {
 	Card::Card(Type type, int x, int y) :
-		mX(x) , mY(y), mIsFront(false), mType(type)
+		mType(type), mX(x), mY(y), mIsFront(false)
 	{
-		std::wstring filename(L"Data/card_creature_");
+		std::wstring filename;
 		switch (type)
 		{
-		case Solitare::Type::Wolf:
-			filename += L"wolf.png";
+		case Type::Wolf:
+			filename = L"Data/card_creature_wolf.png";
 			break;
-		case Solitare::Type::Dragon:
-			filename += L"dragon.png";
 
+		case Type::Dragon:
+			filename = L"Data/card_creature_dragon.png";
 			break;
-		case Solitare::Type::Bear:
-			filename += L"bear.png";
 
+		case Type::Bear:
+			filename = L"Data/card_creature_bear.png";
 			break;
+
 		default:
 			break;
 		}
 		mFront = std::make_unique<Gdiplus::Image>(filename.c_str());
-		mBack = std::make_unique<Gdiplus::Image>(L"Data/card_back_png");
+		mBack = std::make_unique<Gdiplus::Image>(L"Data/card_back.png");
 	}
 	bool Card::CheckCliked(int mouseX, int mouseY)
 	{
+		if (mouseX >= mX && mouseX <= mX + mBack->GetWidth() &&
+			mouseY >= mY && mouseY <= mY + mBack->GetHeight())
+		{
+			Click_Turn(!mIsFront);
+			return true;
+		}
 		return false;
 	}
 	void Card::Click_Turn(bool isFront)

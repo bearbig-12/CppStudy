@@ -13,7 +13,7 @@ namespace Solitare
 	};
 	class Card
 	{
-	
+
 		std::unique_ptr<Gdiplus::Image> mBack;
 		std::unique_ptr<Gdiplus::Image> mFront;
 
@@ -22,7 +22,7 @@ namespace Solitare
 		bool mIsFront;
 		Type mType;
 	protected:
-		Card(){ }
+		Card() { }
 	public:
 		Card(Type type, int x, int y);
 

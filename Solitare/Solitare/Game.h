@@ -11,7 +11,8 @@ namespace Solitare
 	private:
 		std::unique_ptr<Gdiplus::Image> mBackGround;
 		std::list<Card> mDeck;
-		int mFilpCounter;
+		int mFlipCounter;
+		HWND mHwnd;
 
 	public:
 		void Init();

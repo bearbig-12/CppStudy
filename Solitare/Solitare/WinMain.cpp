@@ -17,17 +17,19 @@ int WINAPI WinMain(
 	_In_ int nShowCmd
 )
 {
+	//Gdiplus init
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR gdiplusToken;
 	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 
-	myGame.Init();
 
+	myGame.Init();
 	HWND hwnd;
+
+	//클래스 등록
 	WNDCLASSEX wc;
 
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
-
 	wc.style = CS_HREDRAW | CS_VREDRAW;
 	wc.lpszClassName = gClassName;
 	wc.hInstance = hInstance;
@@ -55,7 +57,7 @@ int WINAPI WinMain(
 		wr.bottom - wr.top,
 		NULL,
 		NULL,
-		hInstance, 
+		hInstance,
 		NULL
 	);
 	if (!hwnd)
@@ -65,6 +67,8 @@ int WINAPI WinMain(
 	}
 	ShowWindow(hwnd, nShowCmd);
 	UpdateWindow(hwnd);
+
+
 
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0))
@@ -83,7 +87,7 @@ void OnPaint(HWND hwnd)
 {
 	HDC hdc;
 	PAINTSTRUCT ps;
-	
+
 	hdc = BeginPaint(hwnd, &ps);
 
 	Gdiplus::Graphics graphics(hdc);
@@ -98,6 +102,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 {
 	switch (message)
 	{
+	case WM_LBUTTONUP:
+		myGame.OnClick(LOWORD(lParam), HIWORD(wParam));
+		break;
 	case WM_PAINT:
 		OnPaint(hwnd);
 		break;
@@ -111,6 +118,5 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
 
-	return 0;
 }
 
