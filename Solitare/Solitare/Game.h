@@ -14,8 +14,10 @@ namespace Solitare
 		int mFlipCounter;
 		HWND mHwnd;
 
+		Card* mpSelectedCard{};
+
 	public:
-		void Init();
+		void Init(HWND hwnd);
 		void Release();
 
 		void Draw(Gdiplus::Graphics& graphics);

@@ -23,7 +23,6 @@ int WINAPI WinMain(
 	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 
 
-	myGame.Init();
 	HWND hwnd;
 
 	//클래스 등록
@@ -45,12 +44,12 @@ int WINAPI WinMain(
 	}
 
 	RECT wr = { 0,0,1024,768 };
-	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
+	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, WS_SYSMENU);
 	hwnd = CreateWindowEx(
 		NULL,
 		gClassName,
 		L"SolitareGame",
-		WS_OVERLAPPEDWINDOW,
+		WS_OVERLAPPED | WS_SYSMENU,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		wr.right - wr.left,
@@ -65,6 +64,10 @@ int WINAPI WinMain(
 		MessageBox(nullptr, L"Failed to Create Window!", L"Error", MB_OK);
 		return 0;
 	}
+
+	myGame.Init(hwnd);
+
+
 	ShowWindow(hwnd, nShowCmd);
 	UpdateWindow(hwnd);
 
@@ -103,7 +106,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 	switch (message)
 	{
 	case WM_LBUTTONUP:
-		myGame.OnClick(LOWORD(lParam), HIWORD(wParam));
+		myGame.OnClick(LOWORD(lParam), HIWORD(lParam));
 		break;
 	case WM_PAINT:
 		OnPaint(hwnd);

@@ -1,9 +1,13 @@
 #include "Game.h"
 #include <string>
+#include <random>
+#include <vector>
+
 namespace Solitare
 {
-	void Game::Init()
+	void Game::Init(HWND hwnd)
 	{
+		mHwnd = hwnd;
 		mBackGround = std::make_unique<Gdiplus::Image>(L"Data/bg_blank.png");
 		CreateCards();
 	}
@@ -43,21 +47,119 @@ namespace Solitare
 
 	void Game::OnClick(int mouseX, int mouseY)
 	{
+		Card* pCard{};
+
 		for (auto& card : mDeck)
 		{
 			if (card.CheckCliked(mouseX, mouseY))
 			{
 				//TODO : 클릭처리
+				pCard = &card;
+				break;
+			}
+		}
+
+		if (pCard != nullptr)
+		{
+			mFlipCounter++;
+			RECT rect{
+				static_cast<LONG>(mCountRect.GetLeft()),
+				static_cast<LONG>(mCountRect.GetTop()),
+				static_cast<LONG>(mCountRect.GetRight()),
+				static_cast<LONG>(mCountRect.GetBottom())
+			};
+			InvalidateRect(mHwnd, &rect, false);
+		}
+
+		if (mpSelectedCard == nullptr)
+		{
+			mpSelectedCard = pCard;
+		}
+		else
+		{
+			if (pCard == mpSelectedCard)
+			{
+				return;
+			}
+			if (pCard->GetType() == mpSelectedCard->GetType())
+			{
+				UpdateWindow(mHwnd);
+				Sleep(500);
+
+				pCard->Invalidate();
+				mpSelectedCard->Invalidate();
+
+				mDeck.remove_if([&](Card& card) {
+					return (card.GetIndex() == mpSelectedCard->GetIndex() ||
+						card.GetIndex() == pCard->GetIndex());
+					});
+
+				mpSelectedCard = nullptr;
+			}
+			else
+			{
+				UpdateWindow(mHwnd);
+				Sleep(500);				
+				pCard->Click_Turn(false);
+				mpSelectedCard->Click_Turn(false);
+
+				mpSelectedCard = nullptr;
 			}
 		}
 	}
 
 	void Game::CreateCards()
 	{
+
+		std::vector<Type> types;
+		while (types.size() < static_cast<size_t>(BOARD_COLUM * BOARD_ROW))
+		{
+			int temp = types.size() % 6;
+
+
+			switch (temp)
+			{
+			case 0:
+				types.push_back(Type::Bear);
+				types.push_back(Type::Bear);
+				break;
+			case 2:
+				types.push_back(Type::Wolf);
+				types.push_back(Type::Dragon);
+				break;
+			case 4:
+				types.push_back(Type::Bear);
+				types.push_back(Type::Bear);
+				break;
+			default:
+				break;
+			}
+		}
+
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::shuffle(types.begin(), types.end(), gen);
+
+		int index{};
+		int posX{ 15 }, posY{ 10 };
+
+		for (int x = 0; x < BOARD_COLUM; ++x)
+		{
+			posY = 10;
+			for (int y = 0; y < BOARD_ROW; ++y)
+			{
+				mDeck.push_back(Card(mHwnd, index ,types[index++], posX, posY));
+
+				posY += 140 + 10;
+			}
+			posX += 100 + 10;
+
+		}
+
 		//TODO 카드 섞기
-		mDeck.push_back(Solitare::Card(Type::Bear, 0, 0));
-		mDeck.push_back(Solitare::Card(Type::Wolf, 120, 0));
-		mDeck.push_back(Solitare::Card(Type::Dragon, 240, 0));
+	/*	mDeck.push_back(Solitare::Card(mHwnd, Type::Bear, 0, 0));
+		mDeck.push_back(Solitare::Card(mHwnd, Type::Wolf, 120, 0));
+		mDeck.push_back(Solitare::Card(mHwnd, Type::Dragon, 240, 0));*/
 
 	}
 

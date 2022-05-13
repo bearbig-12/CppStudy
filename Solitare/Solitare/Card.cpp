@@ -3,8 +3,8 @@
 
 namespace Solitare
 {
-	Card::Card(Type type, int x, int y) :
-		mType(type), mX(x), mY(y), mIsFront(false)
+	Card::Card(HWND hwnd,int index, Type type, int x, int y) :
+		mHwnd(hwnd), mIndex{index}, mType(type), mX(x), mY(y), mIsFront(false)
 	{
 		std::wstring filename;
 		switch (type)
@@ -40,6 +40,7 @@ namespace Solitare
 	void Card::Click_Turn(bool isFront)
 	{
 		mIsFront = isFront;
+		Invalidate();
 	}
 	void Card::Draw(Gdiplus::Graphics& graphics)
 	{
@@ -52,6 +53,15 @@ namespace Solitare
 			graphics.DrawImage(mBack.get(), mX, mY, mBack->GetWidth(), mBack->GetHeight());
 
 		}
+	}
+	void Card::Invalidate()
+	{
+		RECT rct{
+			mX,mY,
+			static_cast<LONG>(mX + mFront->GetWidth()),
+			static_cast<LONG>(mY + mFront->GetHeight())
+		};
+		InvalidateRect(mHwnd, &rct, false);
 	}
 }
 
