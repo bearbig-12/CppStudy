@@ -1,12 +1,6 @@
 #include <Windows.h>
 #include "BitMapExample.h"
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
-void OnPaint(HWND hwnd);
-
-BitMapExample myFramework;
-
-
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -17,7 +11,7 @@ int WINAPI WinMain(
 	int ret{ 0 };
 	try
 	{
-		D2DFrameWork myFrameWork;
+		BitMapExample myFrameWork;
 		if (SUCCEEDED(myFrameWork.Initialize(hInstance)))
 		{
 			ret = myFrameWork.GameLoop();
@@ -33,7 +27,7 @@ int WINAPI WinMain(
 		D2DFrameWork::ShowErrorMsg(wstr);
 	}
 
-	//myFramework.Release();
+
 
 	return ret;
 }
