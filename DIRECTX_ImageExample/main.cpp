@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include "BitMapExample.h"
+#include "ImageExample.h"
 
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
@@ -11,7 +11,7 @@ int WINAPI WinMain(
 	int ret{ 0 };
 	try
 	{
-		BitMapExample myFrameWork;
+		ImageExample myFrameWork;
 		if (SUCCEEDED(myFrameWork.Initialize(hInstance)))
 		{
 			ret = myFrameWork.GameLoop();
