@@ -34,6 +34,7 @@ void BitMapExample::Render()
 	//ClearBuffer(D2D1::ColorF::Yellow);
 	DrawRectToBuffer(100, 50,  D2D1::ColorF::Yellow);
 	DrawCircleToBuffer(500, 500, 50.0f, D2D1::ColorF::Crimson);
+	DrawLineToBuffer(100,100,200,200, D2D1::ColorF::Green);
 	PresentBuffer();
 
 	mspRenderTarget->DrawBitmap(mspFrameBitmap.Get());
@@ -100,6 +101,24 @@ void BitMapExample::DrawCircleToBuffer(int x, int y, float radius, D2D1::ColorF 
 
 void BitMapExample::DrawLineToBuffer(int x1, int y1, int x2, int y2, D2D1::ColorF color)
 {
-	float _x = stati
+	int _x = 0;
+	int _y = 0;
+	if (x1 != x2)
+	{
+		_x = _x - (x1);
+		
+	}
+	else
+	{
+		_x = x1;
+	}
+	_y = _y - (y1);
+
+
+	for (_x = x1, _y = y1; _x < x2, _y < y2; ++_x, ++_y)
+	{
+		static_cast<float> (_y = (y2 - y1) / (x2 - x1) * (_x));
+		DrawPixelToBuffer(_x, _y, color);
+	}
 }
 
