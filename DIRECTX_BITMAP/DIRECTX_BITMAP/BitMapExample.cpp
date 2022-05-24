@@ -32,7 +32,9 @@ void BitMapExample::Render()
 
 	//DrawPixelToBuffer(10, 10, D2D1::ColorF::White);
 	//ClearBuffer(D2D1::ColorF::Yellow);
-	DrawRectToBuffer(100, 50,  D2D1::ColorF::Yellow);
+	DrawRectToBuffer(100, 100,  D2D1::ColorF::Yellow);
+	DrawRectToBuffer(150, 150, D2D1::ColorF::Yellow);
+
 	DrawCircleToBuffer(500, 500, 50.0f, D2D1::ColorF::Crimson);
 	DrawLineToBuffer(100,100,200,200, D2D1::ColorF::Green);
 	PresentBuffer();
@@ -53,10 +55,17 @@ void BitMapExample::DrawPixelToBuffer(int x, int y, D2D1::ColorF color)
 	int pitch = BITMAP_WIDTH * BITMAP_BYTECOUNT;
 	int index = pitch * y + x * BITMAP_BYTECOUNT;
 
-	mspBackBuffer[index ] = static_cast<UINT8>(color.r * 255);
-	mspBackBuffer[index+1] = static_cast<UINT8>(color.g * 255);
-	mspBackBuffer[index+2] = static_cast<UINT8>(color.b * 255);
-	mspBackBuffer[index+3] = static_cast<UINT8>(color.a * 255);
+	float inverse = 1.0f - color.a;
+
+	UINT8 r = static_cast<UINT8>(color.r * 255);
+	UINT8 g = static_cast<UINT8>(color.g * 255);
+	UINT8 b = static_cast<UINT8>(color.b * 255);
+	UINT8 a = static_cast<UINT8>(color.a * 255);
+
+	mspBackBuffer[index ]	    = static_cast<UINT8>(mspBackBuffer[index] * inverse + r * color.a);
+	mspBackBuffer[index + 1]	= static_cast<UINT8>(mspBackBuffer[index] * inverse + g * color.a);
+	mspBackBuffer[index + 2]	= static_cast<UINT8>(mspBackBuffer[index] * inverse + b * color.a);
+	mspBackBuffer[index + 3]    = 255;
 
 }
 
@@ -115,7 +124,7 @@ void BitMapExample::DrawLineToBuffer(int x1, int y1, int x2, int y2, D2D1::Color
 	_y = _y - (y1);
 
 
-	for (_x = x1, _y = y1; _x < x2, _y < y2; ++_x, ++_y)
+	for (_x = x1, _y = y1; _x < x2 , _y < y2; ++_x, ++_y)
 	{
 		static_cast<float> (_y = (y2 - y1) / (x2 - x1) * (_x));
 		DrawPixelToBuffer(_x, _y, color);
