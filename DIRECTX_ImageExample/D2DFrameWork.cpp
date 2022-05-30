@@ -1,103 +1,106 @@
-#include "D2DFrameWork.h"
 #include <sstream>
-
+#include "D2DFramework.h"
+#include "BitmapManager.h"
 #pragma comment (lib, "d2d1.lib")
+#pragma comment (lib, "WindowsCodecs.lib")
 
-
-HRESULT D2DFrameWork::InitWindow(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
+HRESULT D2DFramework::InitWindow(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
 	WNDCLASSEX wc;
 
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
-
-	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpszClassName = WND_CLASS_NAME;
+	wc.lpszClassName = WINDOW_CLASSNAME;
 	wc.hInstance = hInstance;
-	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wc.lpfnWndProc = D2DFrameWork::WndProc;
-
-	if (RegisterClassEx(&wc) == false)
+	wc.lpfnWndProc = WindowProc;
+	wc.cbSize = sizeof(WNDCLASSEX);
+	if (!RegisterClassEx(&wc))
 	{
-		D2DFrameWork::ShowErrorMsg(L"Failed to Create Register");
+		MessageBox(NULL, L"Failed To Register!", L"Error", MB_OK);
 		return 0;
 	}
 
-
-
-	RECT wr = { 0, 0, static_cast<LONG>(width), static_cast<LONG>(height) };					// 윈도우 생성
-	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, false);
-
-	mHwnd = CreateWindowEx(
+	RECT rc{ 0, 0, 
+		static_cast<LONG>(width), static_cast<LONG>(height) };
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+	HWND hwnd = CreateWindowEx(
 		NULL,
-		WND_CLASS_NAME,
+		WINDOW_CLASSNAME,
 		title,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		wr.right - wr.left, wr.bottom - wr.top,
+		rc.right - rc.left,
+		rc.bottom - rc.top,
 		NULL,
 		NULL,
 		hInstance,
 		NULL
 	);
-
-	if (mHwnd == NULL)
+	if (hwnd == NULL)
 	{
-		D2DFrameWork::ShowErrorMsg(L"Failed to Create Window");
+		MessageBox(NULL, L"Failed To Create", L"Error", MB_OK);
 		return 0;
 	}
 
-	SetWindowLongPtr(mHwnd, GWLP_USERDATA,
-		reinterpret_cast<LONG_PTR>(this));					//윈도우 한테 포인터를 부여
+	mHwnd = hwnd;
+
+	SetWindowLongPtr(mHwnd, GWLP_USERDATA, 
+		reinterpret_cast<LONG_PTR>(this));
 
 	return S_OK;
 }
 
-HRESULT D2DFrameWork::InitD2D()
-{
-	HRESULT hr = D2D1CreateFactory(
-		D2D1_FACTORY_TYPE_SINGLE_THREADED,
-		mspD2DFactory.GetAddressOf());
-	if (FAILED(hr))
-	{
-		ShowErrorMsg(L"Failed to Create D2D Factory");
-		return hr;
-	}
-	hr = CreateDeviceResources();
-	ThrowIfFailed(hr);
-
-	return hr;
-}
-
-HRESULT D2DFrameWork::CreateDeviceResources()
-{
-	RECT wr;
-
-	GetClientRect(mHwnd, &wr);		// 윈도우의 클라이언트 렉트(상단바 등을 제외하고 오직 그리기 영역만)
-	HRESULT hr = mspD2DFactory->CreateHwndRenderTarget(
-		D2D1::RenderTargetProperties(),
-		D2D1::HwndRenderTargetProperties(
-			mHwnd,
-			D2D1::SizeU(wr.right - wr.left, wr.bottom - wr.top)),
-		mspRenderTarget.GetAddressOf()
-	);
-
-	return hr;
-}
-
-
-
-HRESULT D2DFrameWork::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
+HRESULT D2DFramework::InitD2D(HWND hwnd)
 {
 	HRESULT hr;
 
 
+
+	// 1. D2D Factory 만들기
+	hr = D2D1CreateFactory(
+		D2D1_FACTORY_TYPE_SINGLE_THREADED, mspD2DFactory.GetAddressOf()
+	);
+
+	ThrowIfFailed(hr);
+
+	return CreateDeviceResources();
+}
+
+HRESULT D2DFramework::CreateDeviceResources()
+{
+	// 2. RenderTarget 생성
+	RECT rc;
+	GetClientRect(mHwnd, &rc);
+	HRESULT hr = mspD2DFactory->CreateHwndRenderTarget(
+		D2D1::RenderTargetProperties(),
+		D2D1::HwndRenderTargetProperties(
+			mHwnd,
+			D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top)
+		),
+		mspRenderTarget.GetAddressOf()
+	);
+	ThrowIfFailed(hr);
+
+	return hr;
+}
+
+HRESULT D2DFramework::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
+{
+	HRESULT hr;
+
+	hr = CoInitialize(nullptr);
+	ThrowIfFailed(hr);
+
 	hr = InitWindow(hInstance, title, width, height);
 	ThrowIfFailed(hr);
 
-	hr = InitD2D();
+	hr = InitD2D(mHwnd);
 	ThrowIfFailed(hr);
+
+	hr = BitmapManager::Instance().Initialize(mspRenderTarget.Get());
+	ThrowIfFailed(hr, "Failed to init BitmapManager");
 
 	ShowWindow(mHwnd, SW_SHOW);
 	UpdateWindow(mHwnd);
@@ -105,11 +108,31 @@ HRESULT D2DFrameWork::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width,
 	return hr;
 }
 
-void D2DFrameWork::Release()
+void D2DFramework::Release()
 {
+	BitmapManager::Instance().Release();
+
+	mspRenderTarget.Reset();
+	mspD2DFactory.Reset();
+
+	CoUninitialize();
 }
 
-int D2DFrameWork::GameLoop()
+void D2DFramework::Render()
+{
+	HRESULT hr;
+
+	mspRenderTarget->BeginDraw();
+	mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
+	hr = mspRenderTarget->EndDraw();
+
+	if (hr == D2DERR_RECREATE_TARGET)
+	{
+		CreateDeviceResources();
+	}
+}
+
+int D2DFramework::GameLoop()
 {
 	MSG msg;
 	while (true)
@@ -118,6 +141,7 @@ int D2DFrameWork::GameLoop()
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+
 			if (msg.message == WM_QUIT)
 			{
 				break;
@@ -128,54 +152,38 @@ int D2DFrameWork::GameLoop()
 			Render();
 		}
 	}
+
+	Release();
+
 	return static_cast<int>(msg.wParam);
 }
 
-void D2DFrameWork::Render()
+void D2DFramework::ShowErrorMsg(LPCWSTR msg, HRESULT error, LPCWSTR title)
 {
-	HRESULT hr;
-	mspRenderTarget->BeginDraw();
-	mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));	// r g b a
+	std::wostringstream oss;
 
-	//TODO: 그리기
+	oss << L"ERROR : " << error << std::endl;
+	oss << msg;
 
-
-	hr = mspRenderTarget->EndDraw();
-	if (hr == D2DERR_RECREATE_TARGET)
-	{
-		CreateDeviceResources();
-	}
+	OutputDebugString(oss.str().c_str());
 }
 
-void D2DFrameWork::ShowErrorMsg(LPCWSTR msg, LPCWSTR title)
+LRESULT CALLBACK D2DFramework::WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-
-
-
-	OutputDebugString(msg);
-
-	MessageBox(nullptr, msg,
-		title, MB_OK | MB_ICONEXCLAMATION);
-}
-
-LRESULT D2DFrameWork::WndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
-{
-	D2DFrameWork* pFrameWork =
-		reinterpret_cast<D2DFrameWork*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+	D2DFramework* pFramework = reinterpret_cast<D2DFramework*>
+		(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 	switch (message)
 	{
 	case WM_CLOSE:
 		DestroyWindow(hwnd);
 		break;
-
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 
 	default:
-		return DefWindowProc(hwnd, message, wparam, lparam);
-		break;
+		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
 
 	return 0;

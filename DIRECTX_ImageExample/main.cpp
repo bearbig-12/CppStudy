@@ -1,5 +1,7 @@
-#include <Windows.h>
-#include "ImageExample.h"
+#include <windows.h>
+#include "ActorExample.h"
+
+ActorExample myFramework;
 
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
@@ -8,27 +10,20 @@ int WINAPI WinMain(
 	_In_ int nShowCmd
 )
 {
-	int ret{ 0 };
+	int result = 0;
+
 	try
 	{
-		ImageExample myFrameWork;
-		if (SUCCEEDED(myFrameWork.Initialize(hInstance)))
-		{
-			ret = myFrameWork.GameLoop();
-		}
+		myFramework.Initialize(hInstance);
 
+		result = myFramework.GameLoop();
 	}
 	catch (com_exception& e)
 	{
-		static wchar_t wstr[128]{};
-		size_t len;
-		mbstowcs_s(&len, wstr, e.what(), 128);	// 아스키코드를 유니코드로
-
-		D2DFrameWork::ShowErrorMsg(wstr);
+		OutputDebugStringA(e.what());
 	}
 
-
-
-	return ret;
+	return result;
 }
+
 

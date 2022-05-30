@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{87b191f4-9872-48bc-9837-173d28e1fa33}</ProjectGuid>
-    <RootNamespace>DIRECTXImageExample</RootNamespace>
+    <ProjectGuid>{973585fa-41dd-465b-89b1-f85a0595b398}</ProjectGuid>
+    <RootNamespace>ActorExample</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,13 +127,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="D2DFrameWork.h" />
-    <ClInclude Include="ImageExample.h" />
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="ActorExample.cpp" />
+    <ClCompile Include="BitmapManager.cpp" />
+    <ClCompile Include="ComException.cpp" />
+    <ClCompile Include="D2DFramework.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D2DFrameWork.cpp" />
-    <ClCompile Include="ImageExample.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="ActorExample.h" />
+    <ClInclude Include="BitmapManager.h" />
+    <ClInclude Include="ComException.h" />
+    <ClInclude Include="D2DFramework.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

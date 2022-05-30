@@ -2,81 +2,35 @@
 
 #include <d2d1.h>
 #include <wrl/client.h>
-#include <exception>
-#include <sstream>
+#include "ComException.h"
 
-class com_exception : public std::exception
+
+class D2DFramework
 {
 private:
-	HRESULT mResult;
-public:
-	com_exception(HRESULT hr) : mResult{ hr } {}
-	virtual const char* what() const override
-	{
-		/*static char buf[128];
-
-		sprintf_s(buf, 128, "Failure with HRESULT of 0X%08X", mResult);
-
-		return buf;*/
-
-		std::stringstream ss;
-		ss << "Failure with Code : " << mResult << std::endl;
-		return ss.str().c_str();
-	}
-
-};
-// inline 
-//		장점: 호출스택을 사용하지 않아서 빠름
-//		단점: 코드 길어짐
-
-// 선언/정의
-//	inline void f()
-//	{
-//	}
-// 
-//	선언과 정의
-//	void f();
-//  inline void f();
-
-// 클래스의 경우 .h에 정의
-inline void ThrowIfFailed(HRESULT hr)
-{
-	if (FAILED(hr))
-	{
-		throw com_exception(hr);
-	}
-}
-
-class D2DFrameWork
-{
-private:
-	const LPCWSTR WND_CLASS_NAME{ L"MyD2DWindowClass" };
+	const LPCWSTR WINDOW_CLASSNAME{ L"MyD2DWindowClass" };
 
 protected:
-	HWND mHwnd{};
-	Microsoft::WRL::ComPtr<ID2D1Factory> mspD2DFactory{};
-	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> mspRenderTarget{};
+	HWND mHwnd;
+	Microsoft::WRL::ComPtr<ID2D1Factory>			mspD2DFactory{};
+	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget>	mspRenderTarget;
 
 protected:
-	HRESULT InitWindow(HINSTANCE hInstance, LPCWSTR title,
-		UINT width, UINT height);		// 윈도우 초기화 함수.
-
-	HRESULT InitD2D();
+	HRESULT InitWindow(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height);
+	virtual HRESULT InitD2D(HWND hwnd);
 	virtual HRESULT CreateDeviceResources();
 
 public:
-	virtual HRESULT Initialize(HINSTANCE hInstance,
-		LPCWSTR title = L"MyFrameWork",
-		UINT width = 1024,
-		UINT height = 768);
+	virtual HRESULT Initialize(HINSTANCE hInstance, LPCWSTR title = L"D2DFramework", 
+		UINT width = 1024, UINT height = 768);
 	virtual void Release();
-	virtual int GameLoop();
 	virtual void Render();
+	virtual int GameLoop();
 
-	static void ShowErrorMsg(LPCWSTR msg, LPCWSTR title = L"Error");
+	void ShowErrorMsg(LPCWSTR msg, HRESULT error = 0, LPCWSTR title = L"Error");
+
+	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 public:
-	static LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
-
+	ID2D1HwndRenderTarget* GetRenderTarget() { return mspRenderTarget.Get(); }
 };
-
